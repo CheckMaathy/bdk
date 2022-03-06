@@ -1,0 +1,137 @@
+{
+  "swagger": "3.0.3",
+  "info": {
+    "title": "POC API",
+    "description": "API for create Products, Orders and Customers (POC Acronym)",
+    "termsOfService": "http://localhost:3333/terms",
+    "contact": {
+      "email": "gc.matheus.wesleys@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [{
+      "url": "http://localhost:3333/api",
+      "description": "API for Develop test"
+    },
+    {
+      "url": "http://localhost:3666/api",
+      "description": "API for Staging test"
+    },
+    {
+      "url": "http://localhost:3999/api",
+      "description": "API for Production test"
+    }
+  ],
+  "paths": {
+    "/customers": {
+      "post": {
+        "sumary": "Create Customer",
+        "description": "Responsible for creating a new customer",
+        "tags": ["Customers"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Customer"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "sumary": "List Customer",
+        "description": "Responsible for listing all customers",
+        "tags": ["Customers"]
+      }
+    },
+    "/products": {
+      "post": {
+        "sumary": "Create Product",
+        "description": "Responsible for creating a new Product",
+        "tags": ["Products"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "sumary": "List Products",
+        "description": "Responsible for listing all products",
+        "tags": ["Products"]
+      }
+    },
+    "/orders": {
+      "post": {
+        "sumary": "Create Order",
+        "description": "Responsible for creating a new Order",
+        "tags": ["Orders"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "sumary": "List Orders",
+        "description": "Responsible for listing all orders",
+        "tags": ["Orders"]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "telephone": {
+            "type": "string"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "string"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string"
+          },
+          "totalPrice": {
+            "type": "string"
+          },
+          "Products": [{
+            "id": "string",
+            "quantity": "string"
+          }]
+        }
+      }
+    }
+  }
+}
