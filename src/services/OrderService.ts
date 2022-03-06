@@ -1,17 +1,16 @@
 import { prisma } from "../database/prismaClient";
 
-interface IProducts {
-  id: string;
-  quantity: string;
-}
-
 interface ICreateProduct {
   customer_id: string;
   total_price: string;
+  products: [{
+    id: string;
+    quantity: string;
+  }];
 }
 
 export class OrderService {
-  async execute({ customer_id, total_price }: ICreateProduct, { id, quantity }: IProducts) {
+  async execute({ customer_id, total_price, products }: ICreateProduct) {
     const customerExist = await prisma.customer.findFirst({
       where: {
         id: {
@@ -20,15 +19,19 @@ export class OrderService {
       }
     });
 
-    const productExist = await prisma.product.findFirst({
-      where: {
-        id: {
-          equals: id
+    for (let product in products) {
+      const productExist = await prisma.product.findFirst({
+        where: {
+          id: products[product].id
         }
-      }
-    });
+      });
 
-    if (!customerExist || !productExist) {
+      if(!productExist) {
+        throw new Error(`Validation Error: product ${products[product].id} not found`);
+      }
+    }
+
+    if (!customerExist) {
       throw new Error("Validation Error");
     }
 
@@ -36,10 +39,7 @@ export class OrderService {
       data: {
         customer_id,
         total_price,
-        products: [{
-          id,
-          quantity
-        }]
+        products
       }
     });
 

@@ -10,9 +10,7 @@ export class ProductService {
   async execute({ name, price, quantity }: ICreateProduct) {
     const productExist = await prisma.product.findFirst({
       where: {
-        name: {
-          mode: "insensitive"
-        }
+        name: name
       }
     });
 
@@ -32,8 +30,8 @@ export class ProductService {
   }
 
   async list() {
-    const listOrders = await prisma.product.findMany();
+    const listProducts = await prisma.product.findMany();
 
-    return listOrders;
+    return listProducts;
   }
 }

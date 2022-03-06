@@ -3,10 +3,10 @@ import { OrderService } from "../services/OrderService";
 
 export class OrderController {
   async handle(request: Request, response: Response) {
-    const { customer_id, total_price, id, quantity } = request.body;
+    const { customer_id, total_price, products } = request.body;
 
     const orderUseCase = new OrderService();
-    const result = await orderUseCase.execute({ customer_id, total_price }, { id, quantity });
+    const result = await orderUseCase.execute({ customer_id, total_price, products });
 
     return response.json(result);
   }

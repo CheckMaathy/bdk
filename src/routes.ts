@@ -1,6 +1,6 @@
 import { Router } from "express";
 import swaggerUi from "swagger-ui-express";
-import swaggerDocs from "./swagger.json";
+import {specs} from "./swaggerOptions";
 import { CustomerController } from "./controller/CustomerController";
 import { OrderController } from "./controller/OrderController";
 import { ProductController } from "./controller/ProductController";
@@ -25,7 +25,7 @@ router.post("/api/products", productController.handle);
 router.get("/api/products", productController.list);
 
 // Documentation
-router.get("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+router.get("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 router.get("/terms", (req, res) => {
   return res.json({
     message: "Service Terms"
