@@ -12,8 +12,20 @@ export class OrderController {
   }
 
   async list(request: Request, response: Response) {
+    const limit = parseInt(request.params.limit);
+    const page = parseInt(request.params.page);
+
     const orderUseCase = new OrderService();
-    const result = await orderUseCase.list();
+    const result = await orderUseCase.list({ limit, page });
+
+    return response.json(result);
+  }
+
+  async listByDate(request: Request, response: Response) {
+    const date = request.params.date;
+
+    const orderUseCase = new OrderService();
+    const result = await orderUseCase.listByDate(date);
 
     return response.json(result);
   }

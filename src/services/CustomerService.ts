@@ -8,6 +8,17 @@ interface ICreateCustomer {
 
 export class CustomerService {
   async create({ name, email, telephone }: ICreateCustomer) {
+    const telephoneValidator: RegExp = /\(\d{2,}\) \d{4,}\-\d{4}/
+    const emailValidator: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+    if (!telephoneValidator.test(telephone)) {
+      throw new Error("Must be a valid telephone");
+    }
+
+    if (!emailValidator.test(email)) {
+      throw new Error("Must be a valid email address");
+    }
+
     const customerExist = await prisma.customer.findFirst({
       where: {
         email: email

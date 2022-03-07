@@ -1,6 +1,6 @@
 import { prisma } from "../database/prismaClient";
 
-interface ICreateProduct {
+interface ICreateOrder {
   customer_id: string;
   total_price: string;
   products: [{
@@ -9,8 +9,14 @@ interface ICreateProduct {
   }];
 }
 
+interface IPaginated {
+  page: number;
+  limit: number;
+}
+
+
 export class OrderService {
-  async execute({ customer_id, total_price, products }: ICreateProduct) {
+  async execute({ customer_id, total_price, products }: ICreateOrder) {
     const customerExist = await prisma.customer.findFirst({
       where: {
         id: {
@@ -46,9 +52,34 @@ export class OrderService {
     return order;
   }
 
-  async list() {
-    const listOrders = await prisma.order.findMany();
+  async list({ limit, page }: IPaginated) {
+    const listOrders = await prisma.order.findMany({
+      skip: page,
+      take: limit,
+      orderBy: {
+        total_price: 'desc',
+      },
+    });
 
     return listOrders;
+  }
+
+  async listByDate(date: string) {
+    const hasOrders = await prisma.order.findMany({
+      where: {
+        createdAt: {
+          in: date
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+
+    if (!hasOrders) {
+      throw new Error("No orders found in selected Date");
+    }
+
+    return hasOrders;
   }
 }

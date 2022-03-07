@@ -18,7 +18,8 @@ router.get("/api/customers", customerController.list);
 
 // Order
 router.post("/api/orders", orderController.handle);
-router.get("/api/orders", orderController.list);
+router.get("/api/orders/limit=:limit/page=:page", orderController.list);
+router.get("/api/orders/date=:date", orderController.listByDate);
 
 // Product
 router.post("/api/products", productController.handle);
